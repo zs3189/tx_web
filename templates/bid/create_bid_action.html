@@ -1,0 +1,16 @@
+{% extends 'includes/base.html' %}
+{% block content %}
+    <div class="container">
+        <h2>创建策略</h2>
+        <form action="{% url 'bid:create_bid_action' %}" method="post">{% csrf_token %}
+            {% for field in form %}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {{ field.errors }}
+                </div>
+            {% endfor %}
+            <input type="submit" value="Submit"/>
+        </form>
+    </div>
+{% endblock %}

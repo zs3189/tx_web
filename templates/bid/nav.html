@@ -1,0 +1,69 @@
+<div class="navbar-default navbar-static-top " role="navigation" id="menu">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="">沪牌一号</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            {% if request.user.is_authenticated %}
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a href="" class="dropdown-toggle" data-toggle="dropdown">
+                            管理 <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'bid:manage_bid_auction' %}" target="_self">标书</a></li>
+                            <li><a href="{% url 'bid:manage_bid_action' %}" target="_self">策略</a></li>
+                            <li><a href="{% url 'bid:manage_bid_hander' %}" target="_self">拍手</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="dropdown">
+                        <a href="" class="dropdown-toggle" data-toggle="dropdown">
+                            创建 <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'bid:create_bid_action' %}" target="_blank">创建策略</a></li>
+                            <li><a href="{% url 'bid:create_bid_auction' %}" target="_blank">创建标书</a></li>
+                            <li><a href="{% url 'bid:batch_create_action' %}" target="_blank">批量创建策略</a></li>
+                            <li><a href="{% url 'bid:batch_create_auction' %}" target="_blank">批量创建标书</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            帮助 <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="" target="_blank">概述</a></li>
+                            <li><a href="" target="_blank">教程</a></li>
+                        </ul>
+                        <li><a href="{% url 'home' %}">论坛</a>
+                    </li>
+                </ul>
+            {% endif %}
+            <ul class="nav navbar-nav navbar-right">
+                {% if request.user.is_authenticated %}
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <img src="">
+                            账号 <b class="caret"></b>
+                        </a>
+
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'password_change' %}">修改密码</a></li>
+                            <li><a href="{% url 'logout_then_login' %}">注销</a></li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li><a href="{% url 'login' %}?next=/">登录</a></li>
+                    <li><a href="{% url 'register' %}">注册</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</div>

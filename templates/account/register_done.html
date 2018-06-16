@@ -1,0 +1,8 @@
+{% extends "includes/../bid/base.html" %}
+{% block title %}Welcome{% endblock %}
+{% block content %}
+    <div class="container">
+        <h1>Welcome {{ new_user.username }}!</h1>
+        <p>账号创建完成，请到您的邮箱激活账号. 现在你可以 <a href="{% url "login" %}">登录</a>.</p>
+    </div>
+{% endblock %}
