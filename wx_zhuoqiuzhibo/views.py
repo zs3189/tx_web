@@ -1,5 +1,6 @@
+from django.http import HttpResponse
 from django.shortcuts import render
-
+import json
 # Create your views here.
 
 import hashlib
@@ -23,6 +24,7 @@ class SnkRank(APIView):
             data = request.data
             print(data)
             print(type(data))  #dict
+            data = dict(data)
             call_updaterank.delay(data)  ## 异步更新排名
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Exception as e:
@@ -32,8 +34,9 @@ class SnkRank(APIView):
 
     def get(self, request):
         data = get_rank()
+        print(data)
         if data:
-            return Response(data, status=status.HTTP_200_OK, content_type=json)
+            return HttpResponse(data, content_type='application/json')
         else:
             return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -43,3 +46,10 @@ class SnkRank(APIView):
     @csrf_exempt
     def dispatch(self, *args, **kwargs):
         return super(SnkRank, self).dispatch(*args, **kwargs)
+
+
+def ranktable(request):
+    data = get_rank()
+    data = json.loads(data)
+    context = {data: data}
+    return render(request=request, template_name='wx_zhuoqiuzhibo/ranktable.html', context=context)

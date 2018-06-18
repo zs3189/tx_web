@@ -5,10 +5,13 @@ import json
 
 def update_rank(data: dict) -> bool:
     client = pymongo.MongoClient(host='localhost', port=27017)
+
     try:
+        print(data)
         db = client.snk
         db.drop_collection('rank') #清空
         db.rank.insert_one(data)
+        print(data)
         print('ok')
         return True
     except Exception as e:
@@ -28,7 +31,8 @@ def get_rank() -> str:
         data = json.dumps(data)
         print(data)
         return data
-    except:
+    except Exception as e:
+        print(e)
         return None
     finally:
         client.close()

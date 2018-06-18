@@ -22,7 +22,7 @@ from wechatpy import parse_message
 
 
 
-common_logger = getLogger('django.request.common')
+logger = getLogger('django.request.common')
 
 
 from django.shortcuts import render
@@ -83,14 +83,26 @@ def autoreply(request):
         msg = parse_message(webData)
         msg_type = msg.type
         if msg_type == 'text':
+            content = msg.Content
             from wechatpy.replies import TextReply
-            reply = TextReply(content='text reply', message=msg)
-            # 或者
-            reply = TextReply(message=msg)
-            reply.content = 'text reply'
-            # 转换成 XML
-            xml = reply.render()
-            return xml
+            if content == '排名':
+                logger.info("询问排名")
+                # reply = TextReply(content='text reply', message=msg)
+                # 或者
+                reply = TextReply(message=msg)
+                reply.content = '查看详细排名' \
+                                ' < a href="https://qiuplus.cn/zqzb/ranktable/">斯诺克排名< /a >'
+                # 转换成 XML
+                xml = reply.render()
+                return xml
+            else:
+                reply = TextReply(content='text reply', message=msg)
+                # 或者
+                reply = TextReply(message=msg)
+                reply.content = 'text reply'
+                # 转换成 XML
+                xml = reply.render()
+                return xml
 
         elif msg_type == 'image':
             from wechatpy.replies import TextReply
