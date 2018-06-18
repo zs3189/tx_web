@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 from tx_web.config import LOCAL_DEBUG
+from celery.schedules import crontab
 
 import os, datetime
 
@@ -47,6 +48,7 @@ INSTALLED_APPS = [
     'django_filters',
     'django_celery_results',
     'wx_zhuoqiuzhibo',
+    'wechat',
 
 ]
 
@@ -316,31 +318,9 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 
 
 #
-##django-crispy-forms  使用bootstrap
-CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
-##--------------------------------------------------
-##celery
-BROKER_URL = 'redis://localhost:6379'
-CELERY_RESULT_BACKEND = 'django-cache'
-# BROKER_URL= 'amqp://guest@localhost//'
-# CELERY_RESULT_BACKEND = 'amqp://guest@localhost//'
-CELERY_ACCEPT_CONTENT = ['application/json']
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TIMEZONE = 'Africa/Nairobi'
-BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}  # 1 hour.超时
 
-# import djcelery
-# djcelery.setup_loader()
-# BROKER_URL = ‘redis://localhost:6379‘
-# CELERYBEAT_SCHEDULER = ‘djcelery.schedulers.DatabaseScheduler‘ # 定时任务
-# CELERY_RESULT_BACKEND = ‘djcelery.backends.database:DatabaseBackend‘
-# CELERY_RESULT_BACKEND = ‘redis://localhost:6379‘
-# CELERY_ACCEPT_CONTENT = [‘application/json‘]
-# CELERY_TASK_SERIALIZER = ‘json‘
-# CELERY_RESULT_SERIALIZER = ‘json‘
-# CELERY_TIMEZONE = ‘Asia/Shanghai‘
+
 
 
 ##∂
@@ -493,3 +473,46 @@ CONTENT_TYPES = ['image', 'video']
 # 500MB - 429916160
 MAX_UPLOAD_SIZE = 5242880
 MAX_PHOTO_SIZE = 51200  ##头像50kb大小限制
+
+
+#==============================================================================
+# 微信第三方平台配置
+#==============================================================================
+COMPONENT_APP_ID = 'app_id'
+COMPONENT_APP_SECRET = '0c79eferferfeferf0cc0be99b20a18faeb'
+COMPONENT_APP_TOKEN = 'srgewgegerferf'
+COMPONENT_ENCODINGAESKEY = 'bz5LSXhcaIBIBKJWZpk2tRl4fiBVbfPN5VlYgwXKTwp'
+# 公众号授权链接，大括号中是需要替换的部分
+AUTH_URL = (
+    "https://mp.weixin.qq.com/cgi-bin/componentloginpage"
+    "?component_appid={component_appid}&pre_auth_code="
+    "{pre_auth_code}&redirect_uri={redirect_uri}"
+)
+# 授权成功之后返回链接。此链接应该调用 /wechat/authorized/ API。
+AUTH_REDIRECT_URI = 'http://www.somewebsite.com/wechat/authorized_successful'
+# 开放平台发布前测试
+TEST_APPID = 'wx570bc396a51b8ff8'
+
+
+#==============================================================================
+# Celery配置
+#==============================================================================
+CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/1'
+BROKER_URL = "redis://127.0.0.1:6379/10"
+CELERY_TASK_RESULT_EXPIRES = 10
+CELERY_TIMEZONE = "Asia/Shanghai"
+CELERY_ENABLE_UTC = False
+UTC_ENABLE = False
+CELERY_ACCEPT_CONTENT = ['pickle', 'json', 'msgpack', 'yaml']
+CELERY_TASK_SERIALIZER = 'pickle'
+CELERYD_MAX_TASKS_PER_CHILD = 2000
+CELERYD_TASK_LOG_LEVEL = 'INFO'
+CELERY_DEFAULT_EXCHANGE = 'default'
+# 定时任务配置
+CELERYBEAT_SCHEDULE = {
+    # 每小时刷新所有公众号 token
+    "refresh_all_wechat_token": {
+        'task': 'wechat.tasks.refresh_all_wechat_token',
+        'schedule': crontab(hour='*', minute=10),
+    }
+}

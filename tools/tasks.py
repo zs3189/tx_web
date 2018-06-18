@@ -1,7 +1,10 @@
 from __future__ import absolute_import, unicode_literals
 from celery import shared_task
 from celery import task, Task
+
+from tools.mongo_operation import update_rank
 from .utils import send_control_email
+
 
 
 @task
@@ -19,6 +22,10 @@ def reset_email(email):
 def send_identify_email(email):
     mail_sent = send_control_email(email, send_type='send_once_identify_code')
     return mail_sent
+
+
+
+
 
 
 
