@@ -19,10 +19,10 @@ from wechat import consts
 from wechat import caches as wechat_caches
 from wechat.tasks import process_wechat_query_auth_code_test
 from wechatpy import parse_message
+import logging
 
 
-
-logger = getLogger('django.request.common')
+logger = logging.getLogger(__name__)
 
 
 from django.shortcuts import render
@@ -63,9 +63,11 @@ class Weixin(APIView):
                 return HttpResponse("wrong token")
         except Exception as e:
             return HttpResponse("wrong")
+
+
     def post(self, request):
         othercontent = autoreply(request)
-
+        print(othercontent)
         return HttpResponse(othercontent)
 
     # django默认开启csrf防护，这里使用@csrf_exempt去掉防护
@@ -82,6 +84,7 @@ def autoreply(request):
         webData = request.body
         msg = parse_message(webData)
         msg_type = msg.type
+        logger.info("询问排名")
         if msg_type == 'text':
             content = msg.Content
             from wechatpy.replies import TextReply
@@ -115,6 +118,8 @@ def autoreply(request):
             return xml
 
     except Exception as Argment:
+        logger.exception("error")
+        logger.error(Argment)
         return Argment
 
 
