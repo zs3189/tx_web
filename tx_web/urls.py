@@ -39,6 +39,8 @@ urlpatterns = [
     url(r'^api-token-verify/', verify_jwt_token), #确认token
 
     url('^weixin/', include('wechat.urls')),
+    url('^zqzb/', include('wx_zhuoqiuzhibo.urls')),
+
 
     ##前端
     url(r'manage/', TemplateView.as_view(template_name="index.html"))
