@@ -28,7 +28,7 @@ def get_rank() -> str:
         del data['_id']
         # data = json.dumps(json_util.dumps(data))
         # data = json.dumps(data, indent=4, default=json_util.default)
-        data = json.dumps(data)
+        data = json.dumps(data['data'])
         print(data)
         return data
     except Exception as e:

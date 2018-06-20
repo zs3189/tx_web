@@ -24,8 +24,9 @@ class SnkRank(APIView):
             data = request.data
             print(data)
             print(type(data))  #dict
-            data = dict(data)
-            call_updaterank.delay(data)  ## 异步更新排名
+            data = list(data)
+            d = {'data': data}
+            call_updaterank.delay(d)  ## 异步更新排名
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Exception as e:
             print(e)
@@ -36,7 +37,7 @@ class SnkRank(APIView):
         data = get_rank()
         print(data)
         if data:
-            return HttpResponse(data, content_type='application/json')
+            return HttpResponse(data,  content_type='application/json')
         else:
             return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -48,8 +49,3 @@ class SnkRank(APIView):
         return super(SnkRank, self).dispatch(*args, **kwargs)
 
 
-def ranktable(request):
-    data = get_rank()
-    data = json.loads(data)
-    context = {data: data}
-    return render(request=request, template_name='wx_zhuoqiuzhibo/ranktable.html', context=context)

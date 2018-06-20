@@ -94,7 +94,7 @@ def autoreply(request):
                 # 或者
                 reply = TextReply(message=msg)
                 reply.content = '查看详细排名' \
-                                ' < a href="https://qiuplus.cn/zqzb/ranktable/">斯诺克排名< /a >'
+                                ' <a href="https://qiuplus.cn/zqzb/ranktable/">斯诺克排名 </a>'
                 # 转换成 XML
                 xml = reply.render()
                 return xml

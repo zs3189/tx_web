@@ -122,7 +122,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, 'templates'),
-                 os.path.join(BASE_DIR, 'FRONTEND/hp-manage/manage')],
+                 os.path.join(BASE_DIR, 'FRONTEND/mbweb/dist')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -425,19 +425,19 @@ LOGGING = {
     },
     'loggers': {
         'django': {
-            'handlers': ['console'],  # console or file
+            'handlers': ['console', 'file'],  # console or file
             'propagate': True,
             'level': 'DEBUG',
         },
         'django.request': {
-            'handlers': ['console'],
+            'handlers': ['console', 'file'],
             'level': 'DEBUG',
             'propagate': False,
         },
         # For performance reasons, SQL logging is only enabled when settings.DEBUG is set to True
         # ref. https://docs.djangoproject.com/en/1.11/topics/logging/#django-db-backends
         'django.db.backends': {
-            'handlers': ['console'],
+            'handlers': ['console', 'file'],
             'propagate': False,
             'level': 'DEBUG',
         },
