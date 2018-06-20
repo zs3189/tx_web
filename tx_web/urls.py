@@ -43,7 +43,7 @@ urlpatterns = [
 
 
     ##前端
-    url(r'manage/', TemplateView.as_view(template_name="index.html"))
+    url(r'mbweb/', TemplateView.as_view(template_name="index.html"))
 ]
 
 if settings.DEBUG:

@@ -102,7 +102,7 @@ def autoreply(request):
                 reply = TextReply(content='text reply', message=msg)
                 # 或者
                 reply = TextReply(message=msg)
-                reply.content = 'text reply'
+                reply.content = '近期无比赛'
                 # 转换成 XML
                 xml = reply.render()
                 return xml
