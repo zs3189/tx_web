@@ -1,0 +1,3 @@
+[submodule "mbweb"]
+	path = mbweb
+	url = git@github.com:zs3189/mbweb.git
