@@ -183,7 +183,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
-STATIC_URL = '/manage/static/'
+STATIC_URL = '/static/'
 LOGIN_URL = '/account/login/'
 SITE_ROOT = os.path.join(os.path.abspath(os.path.dirname(__file__)), '..')
 
@@ -194,7 +194,7 @@ STATICFILES_DIRS = (
     ("js", os.path.join(STATIC_ROOT, 'js')),
     ("assets", os.path.join(STATIC_ROOT, 'assets')),
     ("main", os.path.join(STATIC_ROOT, 'main')),
-    os.path.join(BASE_DIR, 'FRONTEND/hp-manage/manage/static/'),
+    os.path.join(BASE_DIR, 'FRONTEND/mbweb/manage/static/'),
 )
 
 
